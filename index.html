@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가치 카드 — 이토록 멋진 코칭</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:       #11132f;
+    --deep:       #0c0d24;
+    --card-bg:    #1a1d48;
+    --card-acc:   #1c2060;
+    --gold:       #c9a84c;
+    --gold-l:     #e8c97d;
+    --gold-p:     #f7edcc;
+    --cream:      #faf5e8;
+    --text-light: #fbf5e6;
+    --text-muted: #d4c6a6;
+    --glow:       rgba(201,168,76,0.25);
+    --r:          16px;
+  }
+
+  body {
+    background: var(--deep);
+    color: var(--text-light);
+    font-family: 'Noto Serif KR', 'Crimson Pro', Georgia, serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(30,20,80,0.7) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(20,15,60,0.6) 0%, transparent 70%),
+      radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 72% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
+      radial-gradient(2px 2px at 10% 80%, rgba(201,168,76,0.4) 0%, transparent 100%),
+      radial-gradient(2px 2px at 90% 70%, rgba(201,168,76,0.3) 0%, transparent 100%),
+      var(--navy);
+    pointer-events: none;
+  }
+
+  #app { position: relative; z-index: 1; }
+
+  header {
+    text-align: center;
+    padding: 28px 20px 14px;
+    border-bottom: 1px solid rgba(201,168,76,0.35);
+    background: #0f1129;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+  }
+  header h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 30px var(--glow);
+  }
+  .subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-top: 5px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .header-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .nav-btn {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 0.95rem;
+    padding: 8px 20px;
+    border: 1px solid rgba(201,168,76,0.4);
+    background: rgba(201,168,76,0.08);
+    color: var(--gold-l);
+    border-radius: 20px;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: all 0.25s;
+    position: relative;
+  }
+  .nav-btn:hover { background: rgba(201,168,76,0.18); border-color: var(--gold); }
+  .nav-btn.active { background: rgba(201,168,76,0.22); border-color: var(--gold); color: var(--gold); }
+  .saved-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--gold); color: var(--deep);
+    border-radius: 50%; width: 22px; height: 22px;
+    font-size: 0.72rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cinzel', serif;
+  }
+  .header-source {
+    font-size: 0.82rem;
+    color: #bfb194;
+    letter-spacing: 0.08em;
+    margin-top: 10px;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  /* GRID */
+  #grid-view { padding: 28px 16px 60px; max-width: 1200px; margin: 0 auto; }
+  .grid-title {
+    text-align: center;
+    font-size: 0.98rem;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-bottom: 24px;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 12px;
+  }
+
+  .mini-card {
+    aspect-ratio: 2/3;
+    border-radius: 10px;
+    border: 1px solid rgba(201,168,76,0.45);
+    cursor: pointer;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    position: relative; overflow: hidden;
+    animation: fadeUp 0.4s ease both;
+  }
+  .mini-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
+  }
+  .mini-card:hover {
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 16px var(--glow);
+    border-color: var(--gold);
+  }
+  .mini-card:hover .mini-icon { transform: scale(1.2); }
+  .mini-num { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold-l); font-weight: 600; letter-spacing: 0.1em; }
+  .mini-icon { font-size: 2.56rem; transition: transform 0.2s; }
+  .mini-name { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 600; color: #fff8e6; text-shadow: 0 1px 3px rgba(0,0,0,0.6); text-align: center; padding: 0 4px; }
+  .mini-card.saved-mark::after { content: '♥'; position: absolute; top: 4px; right: 6px; font-size: 0.85rem; color: var(--gold-l); }
+
+  /* DETAIL */
+  #detail-view { display: none; flex-direction: column; align-items: center; padding: 32px 20px 80px; min-height: calc(100vh - 130px); }
+  #detail-view.active { display: flex; }
+  body.detail-mode header { display: none; }
+  body.detail-mode #detail-view { min-height: 100vh; padding-top: 28px; }
+
+  .card-scene {
+    perspective: 1200px;
+    width: min(320px, 88vw);
+    height: min(560px, 155vw);
+    cursor: pointer;
+    margin-bottom: 32px;
+  }
+  .card-flipper {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+  }
+  .card-flipper.flipped { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: var(--r);
+    overflow: hidden;
+  }
+
+  .card-front {
+    background: linear-gradient(165deg, #fdf6e8 0%, #f5e8c5 40%, #ede0b2 100%);
+    border: 2px solid var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--glow);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px 20px 20px;
+  }
+  .card-front::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: calc(var(--r) - 4px);
+    pointer-events: none;
+  }
+  .card-front-num {
+    font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.15em;
+    align-self: flex-start; margin-left: 6px;
+  }
+  .card-front-name {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(3rem, 12vw, 4rem);
+    letter-spacing: 0.08em; text-align: center;
+    margin-top: 12px; line-height: 1.2; font-weight: 700;
+    color: #3d2504;
+  }
+  .card-front-icon { font-size: clamp(3rem,12vw,4rem); margin: 18px 0; filter: drop-shadow(0 4px 12px rgba(201,168,76,0.4)); }
+  .card-front-divider { width: 60%; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 4px 0 16px; }
+  .card-front-desc { font-family:'Noto Serif KR',serif; font-size:1.08rem; font-weight:600; color:#24180a; line-height:1.8; text-align:center; padding:0 8px; flex:1; }
+  .card-front-hint { font-family:'Crimson Pro',serif; font-size:0.82rem; color:#7a5a12; margin-top:14px; letter-spacing:0.04em; font-family:'Noto Serif KR',serif; }
+
+  .card-back {
+    background: linear-gradient(160deg, #2a1b5c 0%, #1d1448 45%, #140e36 100%);
+    border: 2px solid var(--gold);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 50px rgba(100,60,200,0.15);
+    transform: rotateY(180deg);
+    display: flex; flex-direction: column; align-items: center;
+    padding: 24px 20px 20px;
+  }
+  .card-back::before {
+    content: ''; position: absolute; inset: 8px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: calc(var(--r) - 4px);
+    pointer-events: none;
+  }
+  .card-back-label { font-family:'Cinzel',serif; font-size:0.85rem; font-weight:600; color:var(--gold-l); letter-spacing:0.12em; margin-bottom:14px; }
+  .card-back-icon { font-size:2rem; margin-bottom:10px; }
+  .card-back-content { font-family:'Noto Serif KR',serif; font-size:1rem; color:#ffffff; line-height:1.8; text-align:center; padding:0 4px; flex:1; }
+  .card-back-divider { width:50%; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:14px 0; }
+  .card-back-pledge-label { font-family:'Cinzel',serif; font-size:0.9rem; font-weight:700; color:var(--gold-l); letter-spacing:0.12em; margin-bottom:8px; font-family:'Noto Serif KR',serif; }
+  .card-back-pledge { font-family:'Noto Serif KR',serif; font-size:1rem; font-weight:600; color:#ffefc2; line-height:1.75; text-align:center; padding:0 6px; }
+  .card-back-stars { font-size:0.7rem; color:var(--gold); opacity:0.7; letter-spacing:6px; margin-top:10px; }
+
+  .flip-hint { font-family:'Noto Serif KR',serif; font-size:0.92rem; color:var(--text-muted); margin-bottom:16px; animation:pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:0.75} 50%{opacity:1} }
+
+  .card-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  .action-btn { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 26px; border-radius:30px; cursor:pointer; letter-spacing:0.05em; transition:all 0.25s; border:none; }
+  .btn-back { background:rgba(255,255,255,0.1); border:1px solid rgba(201,168,76,0.55); color:var(--text-light); }
+  .btn-back:hover { background:rgba(255,255,255,0.12); border-color:var(--gold); }
+  .btn-save { background:linear-gradient(135deg,#b58a24 0%,var(--gold-l) 100%); color:#1a1000; font-weight:700; box-shadow:0 4px 16px rgba(201,168,76,0.3); }
+  .count-chip { display:inline-block; min-width:22px; margin-left:6px; padding:0 6px; border-radius:11px; background:var(--gold); color:#1a1000; font-size:0.78rem; font-weight:700; line-height:22px; text-align:center; }
+  .count-chip:empty { display:none; }
+  .btn-save:hover { box-shadow:0 6px 24px rgba(201,168,76,0.5); transform:translateY(-1px); }
+  .btn-save.saved-state { background:rgba(201,168,76,0.18); border:1px solid var(--gold-l); color:var(--gold-l); box-shadow:none; }
+
+  /* SAVED */
+  #saved-view { display:none; padding:32px 16px 80px; max-width:900px; margin:0 auto; }
+  #saved-view.active { display:block; }
+  .saved-header { text-align:center; margin-bottom:28px; }
+  .saved-header h2 { font-family:'Cinzel',serif; color:var(--gold); font-size:1.5rem; letter-spacing:0.12em; }
+  .saved-header p { font-size:1rem; color:var(--text-muted); margin-top:8px; }
+  .saved-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:14px; margin-bottom:32px; }
+  .saved-mini { aspect-ratio:2/3; border-radius:10px; background:linear-gradient(155deg,#2c2070 0%,#1a1448 100%); border:1px solid rgba(201,168,76,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; cursor:pointer; transition:all 0.2s; }
+  .saved-mini:hover { transform:translateY(-4px); box-shadow:0 10px 24px rgba(0,0,0,0.5),0 0 14px var(--glow); border-color:var(--gold); }
+  .saved-mini .mini-icon { font-size:2.2rem; }
+  .saved-mini .mini-name { font-size:1.05rem; color:#fff8e6; font-family:'Noto Serif KR',serif; }
+  .empty-saved { text-align:center; padding:60px 20px; color:var(--text-muted); font-size:1.05rem; line-height:2; grid-column:1/-1; }
+  .empty-saved .empty-icon { font-size:3rem; display:block; margin-bottom:16px; opacity:0.4; }
+  .saved-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .btn-clear { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; border:1px solid rgba(230,110,110,0.6); background:rgba(180,60,60,0.14); color:#ffaaaa; cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
+  .btn-clear:hover { background:rgba(180,60,60,0.18); border-color:#e08080; }
+  .btn-download { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; border:1px solid rgba(201,168,76,0.6); background:rgba(201,168,76,0.14); color:var(--gold-l); cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
+  .btn-download:hover { background:rgba(201,168,76,0.18); border-color:var(--gold); color:var(--gold); }
+
+  /* ── copy modal ── */
+  .modal-overlay { position:fixed; inset:0; background:rgba(4,4,20,0.88); z-index:500; display:none; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(6px); }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:linear-gradient(160deg,#12153a 0%,#0a0d28 100%); border:1px solid rgba(201,168,76,0.4); border-radius:16px; width:min(520px,96vw); max-height:82vh; display:flex; flex-direction:column; box-shadow:0 24px 60px rgba(0,0,0,0.7),0 0 40px rgba(201,168,76,0.1); }
+  .modal-header { display:flex; align-items:center; justify-content:space-between; padding:18px 22px 14px; border-bottom:1px solid rgba(201,168,76,0.15); }
+  .modal-title { font-family:'Noto Serif KR',serif; font-weight:700; font-size:1.05rem; color:var(--gold); letter-spacing:0.15em; }
+  .modal-close { background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; line-height:1; padding:2px 6px; transition:color 0.2s; }
+  .modal-close:hover { color:var(--gold); }
+  .modal-body { padding:16px 22px; overflow-y:auto; flex:1; }
+  .modal-hint { font-size:0.92rem; color:var(--text-muted); margin-bottom:10px; letter-spacing:0.05em; }
+  .modal-textarea { width:100%; min-height:240px; background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.35); border-radius:8px; color:#ffffff; font-family:'Noto Serif KR',monospace; font-size:0.98rem; line-height:1.9; padding:14px; resize:vertical; outline:none; letter-spacing:0.02em; }
+  .modal-textarea:focus { border-color:rgba(201,168,76,0.5); }
+  .modal-footer { padding:14px 22px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid rgba(201,168,76,0.1); }
+  .btn-copy { font-family:'Noto Serif KR',serif; font-size:1rem; padding:10px 22px; border-radius:22px; border:none; background:linear-gradient(135deg,#b58a24,var(--gold-l)); color:#1a1000; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
+  .btn-copy:hover { box-shadow:0 4px 16px rgba(201,168,76,0.4); transform:translateY(-1px); }
+  .btn-modal-cancel { font-family:'Noto Serif KR',serif; font-size:1rem; padding:10px 20px; border-radius:22px; border:1px solid rgba(201,168,76,0.5); background:transparent; color:var(--text-light); cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
+  .btn-modal-cancel:hover { border-color:var(--gold); color:var(--text-light); }
+
+  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:rgba(30,20,70,0.95); border:1px solid var(--gold); color:#fff8e6; font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; letter-spacing:0.06em; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:999; backdrop-filter:blur(10px); box-shadow:0 8px 24px rgba(0,0,0,0.5); white-space:nowrap; }
+  .toast.show { transform:translateX(-50%) translateY(0); }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+  @media (max-width:480px) { .cards-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px} .mini-icon{font-size:2rem} .mini-name{font-size:0.98rem} .mini-num{font-size:0.8rem} .action-btn{padding:11px 16px;font-size:0.95rem} .card-actions{gap:6px;flex-wrap:nowrap} .card-actions .action-btn{padding:10px 12px;font-size:0.9rem;white-space:nowrap;letter-spacing:0} .count-chip{min-width:20px;line-height:20px;margin-left:4px;font-size:0.72rem} }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>✦ 가치 카드 ✦</h1>
+    <p class="subtitle">가치란 소중한 것, 판단의 기준</p>
+    <div class="header-actions">
+      <button class="nav-btn active" id="btn-all" onclick="showGrid()">전체 카드</button>
+      <button class="nav-btn" id="btn-saved" onclick="showSaved()">
+        담은 카드
+        <span class="saved-badge" id="saved-badge" style="display:none">0</span>
+      </button>
+    </div>
+    <p class="header-source">출처: 이토록 멋진 코칭 — 이한주 코치</p>
+  </header>
+
+  <div id="grid-view">
+    <p class="grid-title">카드를 선택하여 당신에게 소중한 가치를 만나세요</p>
+    <div class="cards-grid" id="cards-grid"></div>
+  </div>
+
+  <div id="detail-view">
+    <div class="card-scene" onclick="flipCard()">
+      <div class="card-flipper" id="flipper">
+        <div class="card-face card-front">
+          <div class="card-front-num" id="d-num"></div>
+          <div class="card-front-name" id="d-name"></div>
+          <div class="card-front-icon" id="d-icon"></div>
+          <div class="card-front-divider"></div>
+          <div class="card-front-desc" id="d-desc"></div>
+          <div class="card-front-hint">카드를 누르면 뒷면을 볼 수 있습니다</div>
+        </div>
+        <div class="card-face card-back">
+          <div class="card-back-label">✦ 마음의 울림 ✦</div>
+          <div class="card-back-icon" id="d-back-icon"></div>
+          <div class="card-back-content" id="d-back-content"></div>
+          <div class="card-back-divider"></div>
+          <div class="card-back-pledge-label">오늘의 다짐</div>
+          <div class="card-back-pledge" id="d-pledge"></div>
+          <div class="card-back-stars">✦ ✦ ✦</div>
+        </div>
+      </div>
+    </div>
+    <p class="flip-hint" id="flip-hint">✦ 카드를 눌러 뒷면 보기 ✦</p>
+    <div class="card-actions">
+      <button class="action-btn btn-back" onclick="showGrid()">전체 카드</button>
+      <button class="action-btn btn-back" onclick="showSaved()">담아둔 카드<span class="count-chip" id="detail-count"></span></button>
+      <button class="action-btn btn-save" id="save-btn" onclick="toggleSave()">♥ 담아두기</button>
+    </div>
+  </div>
+
+  <div id="saved-view">
+    <div class="saved-header">
+      <h2>✦ 담은 카드 ✦</h2>
+      <p>내가 소중히 여기는 가치들</p>
+    </div>
+    <div class="saved-grid" id="saved-grid"></div>
+    <div class="saved-actions">
+      <button class="action-btn btn-back" onclick="showGrid()">← 전체로 돌아가기</button>
+      <button class="action-btn btn-clear" onclick="clearSaved()">✕ 비우기</button>
+      <button class="action-btn btn-download" onclick="downloadSaved()">↓ 내려받기</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <span class="modal-title">✦ 담은 카드 내용 ✦</span>
+      <button class="modal-close" onclick="closeModalDirect()">×</button>
+    </div>
+    <div class="modal-body">
+      <p class="modal-hint">전체 선택 후 복사하거나, 아래 복사 버튼을 눌러주세요.</p>
+      <textarea class="modal-textarea" id="modal-text" readonly></textarea>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="closeModalDirect()">닫기</button>
+      <button class="btn-copy" onclick="copyText()">📋 전체 복사</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const virtues = [
+  { id:1,  suit:'♠', name:'정직',      icon:'💎',
+    desc:'진실을 말하고 거짓을 멀리함',
+    back:'정직은 용기가 필요합니다. 불편한 진실도 말할 수 있을 때 진정한 신뢰가 시작됩니다. 스스로에게 거짓말하지 않는 것이 모든 정직의 출발점입니다.',
+    pledge:'나는 오늘 불편하더라도 진실을 말하겠습니다.' },
+
+  { id:2,  suit:'♠', name:'책임',      icon:'⚓',
+    desc:'자신의 의무를 다하는 태도',
+    back:'책임은 변명 없이 결과를 받아들이는 성숙함입니다. 내 선택의 주인이 될 때 비로소 진정한 자유와 신뢰가 찾아옵니다.',
+    pledge:'나는 오늘 내 말과 행동에 온전히 책임을 지겠습니다.' },
+
+  { id:3,  suit:'♠', name:'자율',      icon:'🦅',
+    desc:'외부의 간섭 없이 스스로 결정하고 행동함',
+    back:'자율은 규칙의 부재가 아니라 내면의 기준을 가진 자유입니다. 스스로 선택할 때 그 선택에 진정한 의미와 힘이 생깁니다.',
+    pledge:'나는 오늘 타인의 시선이 아닌 내 기준으로 결정하겠습니다.' },
+
+  { id:4,  suit:'♠', name:'존중',      icon:'🙌',
+    desc:'타인의 존재와 의견을 귀하게 여김',
+    back:'존중은 동의가 아닙니다. 다르더라도 그 사람의 존엄을 인정하는 것입니다. 존중은 모든 건강한 관계의 기초입니다.',
+    pledge:'나는 오늘 만나는 모든 사람을 귀한 존재로 대하겠습니다.' },
+
+  { id:5,  suit:'♠', name:'공정',      icon:'🌓',
+    desc:'편견 없이 공평하게 대우함',
+    back:'공정함은 내 편을 드는 것이 아닙니다. 같은 기준이 나에게도 타인에게도 동일하게 적용될 때 진정한 공정이 됩니다.',
+    pledge:'나는 오늘 편견 없이 공평한 눈으로 판단하겠습니다.' },
+
+  { id:6,  suit:'♠', name:'배려',      icon:'🌼',
+    desc:'다른 사람의 입장과 감정을 생각함',
+    back:'배려는 관심에서 시작됩니다. 상대방을 진심으로 바라볼 때, 그 사람이 무엇을 필요로 하는지 보이기 시작합니다.',
+    pledge:'나는 오늘 주변 사람들의 마음을 먼저 헤아리겠습니다.' },
+
+  { id:7,  suit:'♠', name:'신뢰',      icon:'🔐',
+    desc:'믿고 의지할 수 있는 관계 유지',
+    back:'신뢰는 작은 약속의 축적입니다. 오늘 지킨 작은 약속 하나가 내일의 깊은 신뢰를 만듭니다. 신뢰는 쌓는 데 오래 걸리고 무너지는 건 한순간입니다.',
+    pledge:'나는 오늘 한 말을 반드시 지키겠습니다.' },
+
+  { id:8,  suit:'♠', name:'성실',      icon:'📚',
+    desc:'꾸준하고 성의 있게 행동함',
+    back:'성실은 재능보다 강합니다. 기분에 상관없이 꾸준히 하는 것이 결국 큰 결과를 만들어냅니다. 매일의 작은 성실함이 위대한 차이를 만듭니다.',
+    pledge:'나는 오늘 감정과 상관없이 해야 할 일을 성의 있게 하겠습니다.' },
+
+  { id:9,  suit:'♠', name:'용기',      icon:'🦁',
+    desc:'두려움을 넘어 옳은 일을 선택함',
+    back:'용기는 두려움이 없는 것이 아닙니다. 두려움을 느끼면서도 옳은 것을 선택하는 것, 그것이 진정한 용기입니다.',
+    pledge:'나는 오늘 두려움 앞에서 물러서지 않고 옳은 선택을 하겠습니다.' },
+
+  { id:10, suit:'♠', name:'인내',      icon:'⏳',
+    desc:'어려움 속에서도 포기하지 않음',
+    back:'인내는 수동적인 기다림이 아닙니다. 결과가 보이지 않을 때에도 묵묵히 계속하는 힘입니다. 모든 위대한 것은 인내 속에서 자랍니다.',
+    pledge:'나는 오늘 포기하고 싶은 순간에 한 걸음 더 나아가겠습니다.' },
+
+  { id:11, suit:'♠', name:'겸손',      icon:'🌸',
+    desc:'자신을 낮추고 타인을 존중함',
+    back:'겸손은 자기비하가 아닙니다. 자신의 가치를 알면서도 타인도 똑같이 가치 있음을 아는 것입니다. 겸손한 사람에게는 항상 배울 것이 있습니다.',
+    pledge:'나는 오늘 내가 모르는 것을 인정하고 기꺼이 배우겠습니다.' },
+
+  { id:12, suit:'♠', name:'따뜻함',    icon:'🌷',
+    desc:'친절하고 포근한 태도',
+    back:'따뜻함은 말 한 마디, 미소 하나에서 시작됩니다. 내 온기가 누군가의 하루를 완전히 바꿀 수 있습니다. 따뜻함은 전파됩니다.',
+    pledge:'나는 오늘 내 말과 표정을 따뜻하게 유지하겠습니다.' },
+
+  { id:13, suit:'♥', name:'협력',      icon:'🤲',
+    desc:'함께 협조하며 일함',
+    back:'혼자 가면 빠르고, 함께 가면 멀리 갑니다. 진정한 협력은 내 공을 내세우지 않고 모두의 성공을 함께 기뻐하는 것에서 완성됩니다.',
+    pledge:'나는 오늘 내 이익보다 공동의 목표를 위해 기꺼이 협력하겠습니다.' },
+
+  { id:14, suit:'♥', name:'도전',      icon:'🚀',
+    desc:'새로운 것에 과감히 시도함',
+    back:'도전하지 않은 실패는 없지만, 도전 없이는 성장도 없습니다. 실패보다 시도하지 않음을 더 두려워하세요. 시작이 반입니다.',
+    pledge:'나는 오늘 두려움 때문에 미루던 것을 한 가지 시작하겠습니다.' },
+
+  { id:15, suit:'♥', name:'성장',      icon:'🌱',
+    desc:'끊임없이 배우고 발전함',
+    back:'성장은 항상 불편함과 함께 옵니다. 어제보다 나은 오늘의 자신이 되는 것, 그것이 진정한 성장이며 가장 보람 있는 여정입니다.',
+    pledge:'나는 오늘 배움의 기회를 놓치지 않겠습니다.' },
+
+  { id:16, suit:'♥', name:'열정',      icon:'🔥',
+    desc:'강한 에너지와 몰입으로 임함',
+    back:'열정은 항상 먼저 느껴지지 않습니다. 때로는 행동이 열정을 불러오기도 합니다. 오늘 작게 시작하면 열정이 따라옵니다.',
+    pledge:'나는 오늘 내가 하는 일에 전심을 다하겠습니다.' },
+
+  { id:17, suit:'♥', name:'창의성',    icon:'🎨',
+    desc:'독창적이고 새로운 방식으로 사고함',
+    back:'창의성은 예술가만의 것이 아닙니다. 익숙한 문제를 새로운 눈으로 보는 것, 그 시각이 세상을 바꿉니다. 누구나 창의적일 수 있습니다.',
+    pledge:'나는 오늘 익숙한 방식 대신 새로운 시각을 탐색하겠습니다.' },
+
+  { id:18, suit:'♥', name:'개방성',    icon:'🌈',
+    desc:'다양한 의견과 변화에 열려 있음',
+    back:'개방성은 동의가 아닙니다. 내 생각과 다르더라도 진지하게 들을 수 있는 것, 새로운 관점이 나를 더 넓혀줍니다.',
+    pledge:'나는 오늘 다른 의견을 방어 없이 먼저 들어보겠습니다.' },
+
+  { id:19, suit:'♥', name:'독립성',    icon:'🦋',
+    desc:'자기 힘으로 판단하고 실행함',
+    back:'독립성은 혼자 고립됨이 아닙니다. 타인의 의견을 참고하면서도 스스로 결정하는 힘입니다. 내 삶의 주인은 나입니다.',
+    pledge:'나는 오늘 타인의 판단에 의존하지 않고 스스로 결정하겠습니다.' },
+
+  { id:20, suit:'♥', name:'유연성',    icon:'🌿',
+    desc:'상황에 맞게 잘 적응함',
+    back:'나무는 폭풍에 휘어지기 때문에 부러지지 않습니다. 변화 앞에서 유연하게 반응하는 것이 우리를 더 강하고 지혜롭게 만듭니다.',
+    pledge:'나는 오늘 예상치 못한 변화를 저항이 아닌 적응의 기회로 받아들이겠습니다.' },
+
+  { id:21, suit:'♥', name:'실용성',    icon:'🔧',
+    desc:'현실적이고 효율적인 접근을 중시함',
+    back:'실용성은 이상을 포기하는 것이 아닙니다. 이상을 현실로 만드는 가장 효과적인 방법을 찾는 것입니다. 좋은 의도는 좋은 방법으로 완성됩니다.',
+    pledge:'나는 오늘 실현 가능한 방법에 집중하여 결과를 만들겠습니다.' },
+
+  { id:22, suit:'♥', name:'집중',      icon:'🎯',
+    desc:'주의력을 모아 몰입함',
+    back:'집중은 희귀한 능력입니다. 여러 곳에 분산된 노력보다 한 곳에 온전히 몰입하는 순간이 훨씬 큰 결과를 만듭니다.',
+    pledge:'나는 오늘 한 가지에 온전히 집중하는 시간을 갖겠습니다.' },
+
+  { id:23, suit:'♥', name:'정의',      icon:'⚖️',
+    desc:'올바름과 공공의 이익을 지향함',
+    back:'정의는 침묵하지 않습니다. 불공정을 목격할 때 눈을 감는 것은 불의에 동참하는 것입니다. 용감하게 목소리를 내는 것이 정의의 실천입니다.',
+    pledge:'나는 오늘 불의 앞에서 목소리를 내겠습니다.' },
+
+  { id:24, suit:'♥', name:'안전',      icon:'🛡️',
+    desc:'신체적·정서적으로 보호받고자 함',
+    back:'안전은 울타리가 아닌 신뢰에서 옵니다. 안전한 공간을 만드는 것은 나 자신과 타인 모두를 위한 소중한 선물입니다.',
+    pledge:'나는 오늘 나와 주변 사람들이 안전하다고 느낄 수 있는 환경을 만들겠습니다.' },
+
+  { id:25, suit:'♦', name:'자유',      icon:'🕊️',
+    desc:'억압 없이 자신답게 살 수 있음',
+    back:'진정한 자유는 외부 제약의 부재가 아니라 내면의 두려움으로부터 자유로운 것입니다. 타인의 기대가 아닌 나 자신으로 사는 것이 자유입니다.',
+    pledge:'나는 오늘 타인의 기대가 아닌 진정한 나 자신으로 살겠습니다.' },
+
+  { id:26, suit:'♦', name:'평화',      icon:'☮️',
+    desc:'갈등 없이 조화로운 상태 유지',
+    back:'평화는 갈등의 부재가 아닙니다. 갈등 속에서도 내면의 고요를 유지하는 것, 나의 평화가 내 주변의 평화로 퍼져나갑니다.',
+    pledge:'나는 오늘 갈등보다 화해의 길을 먼저 찾겠습니다.' },
+
+  { id:27, suit:'♦', name:'기쁨',      icon:'✨',
+    desc:'삶에서 즐거움과 웃음을 추구함',
+    back:'기쁨은 상황에 달려있지 않습니다. 지금 이 순간 기쁠 이유를 찾아보세요. 분명 있습니다. 기쁨은 선택이고 연습입니다.',
+    pledge:'나는 오늘 작은 것에서 기쁨을 발견하고 주변에 나누겠습니다.' },
+
+  { id:28, suit:'♦', name:'감사',      icon:'🙏',
+    desc:'받은 것에 고마움을 표현함',
+    back:'감사는 관점의 혁명입니다. 어려운 시간에도 감사할 것을 찾는 연습이 우리의 마음을 변화시킵니다. 감사하는 삶이 가장 풍요로운 삶입니다.',
+    pledge:'나는 오늘 내 삶의 선물들을 의식하며 감사를 표현하겠습니다.' },
+
+  { id:29, suit:'♦', name:'인정',      icon:'🎖️',
+    desc:'타인으로부터 가치 있는 존재로 여겨지길 바람',
+    back:'인정받고 싶은 마음은 자연스럽습니다. 하지만 가장 중요한 인정은 스스로 자신을 인정하는 것입니다. 그리고 타인의 노력을 먼저 인정해 주세요.',
+    pledge:'나는 오늘 타인의 노력을 진심으로 인정하고 표현하겠습니다.' },
+
+  { id:30, suit:'♦', name:'성취',      icon:'🏆',
+    desc:'목표를 달성하고 결과를 만들어냄',
+    back:'성취는 결과만이 아닙니다. 목표를 향해 나아가는 과정 자체가 이미 성취입니다. 오늘의 작은 완성을 충분히 축하하세요.',
+    pledge:'나는 오늘 명확한 목표를 세우고 첫 걸음을 내딛겠습니다.' },
+
+  { id:31, suit:'♦', name:'영향력',    icon:'💫',
+    desc:'타인과 조직에 긍정적 영향을 주고자 함',
+    back:'영향력은 지위에서 오지 않습니다. 진정성 있는 삶에서 자연스럽게 흘러나옵니다. 내 존재와 행동이 타인에게 힘이 됩니다.',
+    pledge:'나는 오늘 내 행동이 주변에 미치는 영향을 의식하겠습니다.' },
+
+  { id:32, suit:'♦', name:'소속감',    icon:'🤗',
+    desc:'공동체 안에서의 연결감을 느끼는 것',
+    back:'우리는 연결 속에서 더 강해집니다. 소속감은 단순한 멤버십이 아니라 진심으로 환영받고 있다는 따뜻한 느낌입니다.',
+    pledge:'나는 오늘 공동체의 일원임을 기억하고 기꺼이 기여하겠습니다.' },
+
+  { id:33, suit:'♦', name:'자비',      icon:'💜',
+    desc:'약자에게 연민을 품고 도와줌',
+    back:'자비는 먼저 자신에게 베푸는 것에서 시작됩니다. 자신의 부족함을 용납할 때 타인에게도 진정한 자비를 베풀 수 있습니다.',
+    pledge:'나는 오늘 어려운 처지에 있는 사람에게 따뜻한 마음을 내어주겠습니다.' },
+
+  { id:34, suit:'♦', name:'봉사',      icon:'🕯️',
+    desc:'타인을 돕는 행동에서 가치를 느낌',
+    back:'봉사는 거창할 필요가 없습니다. 오늘 내 옆의 누군가에게 도움의 손을 내미는 것, 그것이 봉사의 시작이며 세상을 바꾸는 힘입니다.',
+    pledge:'나는 오늘 내가 도울 수 있는 사람에게 먼저 손을 내밀겠습니다.' },
+
+  { id:35, suit:'♦', name:'친밀감',    icon:'💝',
+    desc:'깊고 진솔한 관계를 맺고자 함',
+    back:'친밀감은 시간과 솔직함으로 쌓입니다. 진정한 친밀감은 약함도 보여줄 수 있는 안전한 관계에서 꽃피어납니다.',
+    pledge:'나는 오늘 소중한 사람과 더 깊고 솔직한 대화를 나누겠습니다.' },
+
+  { id:36, suit:'♦', name:'사랑',      icon:'❤️',
+    desc:'상대를 아끼고 소중히 여기는 마음',
+    back:'사랑은 느낌이기도 하지만 무엇보다 선택이고 행동입니다. 조건 없이 사랑할 때 우리는 가장 인간다워집니다. 오늘 표현하세요.',
+    pledge:'나는 오늘 말과 행동으로 사랑을 표현하겠습니다.' },
+
+  { id:37, suit:'♣', name:'명예',      icon:'👑',
+    desc:'존경받는 존재로 기억되기를 바람',
+    back:'진정한 명예는 타인의 시선이 아닌 내 내면의 기준에서 나옵니다. 아무도 알아주지 않아도 명예롭게 행동하는 것, 그것이 고귀함입니다.',
+    pledge:'나는 오늘 내 이름을 부끄럽지 않게 하는 선택을 하겠습니다.' },
+
+  { id:38, suit:'♣', name:'충성',      icon:'🔑',
+    desc:'관계나 소속된 집단에 헌신함',
+    back:'충성은 어려운 시간에 진가를 발휘합니다. 편할 때만이 아니라 폭풍의 시간에도 함께하는 것, 그것이 진정한 충성입니다.',
+    pledge:'나는 오늘 소중한 관계에 변함없이 헌신하겠습니다.' },
+
+  { id:39, suit:'♣', name:'자존감',    icon:'🌟',
+    desc:'자신을 긍정적으로 평가함',
+    back:'자존감은 자만이 아닙니다. 실수를 해도 부족함이 있어도 여전히 내가 가치 있음을 아는 것입니다. 나는 충분히 소중한 존재입니다.',
+    pledge:'나는 오늘 나 자신을 있는 그대로 존중하겠습니다.' },
+
+  { id:40, suit:'♣', name:'균형',      icon:'🎭',
+    desc:'일과 삶, 감정과 이성의 조화를 중시함',
+    back:'균형은 정적인 상태가 아닙니다. 끊임없이 조정하며 균형을 되찾는 동적인 과정입니다. 완벽한 균형보다 균형을 향한 노력이 중요합니다.',
+    pledge:'나는 오늘 내 삶의 균형을 점검하고 비어있는 부분을 채우겠습니다.' },
+
+  { id:41, suit:'♣', name:'기회',      icon:'🌅',
+    desc:'삶의 가능성과 잠재력을 추구함',
+    back:'기회는 준비된 사람에게 찾아옵니다. 그리고 때로는 문제처럼 보이는 것이 위장한 기회인 경우도 있습니다. 가능성을 보는 눈을 키우세요.',
+    pledge:'나는 오늘 위기 속에서 기회를 찾는 눈을 갖겠습니다.' },
+
+  { id:42, suit:'♣', name:'탐구',      icon:'🔭',
+    desc:'진리와 지식을 향한 지속적 질문',
+    back:'탐구는 답이 아닌 질문에서 시작됩니다. 왜, 어떻게를 끊임없이 물을 때 새로운 세계가 열립니다. 질문하는 사람이 성장합니다.',
+    pledge:'나는 오늘 익숙한 것에 새로운 질문을 던지겠습니다.' },
+
+  { id:43, suit:'♣', name:'전문성',    icon:'🎓',
+    desc:'높은 역량과 기술을 갖추는 것',
+    back:'전문성은 하루아침에 오지 않습니다. 꾸준한 학습과 실천의 축적이 진정한 전문가를 만듭니다. 오늘의 투자가 내일의 역량입니다.',
+    pledge:'나는 오늘 내 분야의 역량을 한 단계 높이는 데 투자하겠습니다.' },
+
+  { id:44, suit:'♣', name:'탁월함',    icon:'🏅',
+    desc:'평균을 넘는 우수한 성과를 내는 것',
+    back:'탁월함은 타인과의 경쟁이 아닙니다. 어제의 나보다 더 나은 오늘의 나가 되는 것, 그것이 탁월함이며 최선이 곧 탁월함입니다.',
+    pledge:'나는 오늘 어떤 일이든 대충이 아닌 최선으로 임하겠습니다.' },
+
+  { id:45, suit:'♣', name:'명확성',    icon:'🔮',
+    desc:'불분명한 것보다 분명함을 추구함',
+    back:'명확성은 단순함이 아닙니다. 복잡한 것을 명료하게 표현할 수 있을 때 진정한 이해와 소통이 생깁니다. 명확함이 신뢰를 만듭니다.',
+    pledge:'나는 오늘 내 생각과 기대를 명확하게 표현하고 소통하겠습니다.' },
+
+  { id:46, suit:'♣', name:'질서',      icon:'📐',
+    desc:'규칙과 안정된 구조를 선호함',
+    back:'질서는 창의성의 적이 아닙니다. 오히려 좋은 질서가 자유로운 창의성의 토대가 됩니다. 안정된 구조 위에서 자유가 꽃핍니다.',
+    pledge:'나는 오늘 내 환경과 일상에 건강한 질서를 만들겠습니다.' },
+
+  { id:47, suit:'♣', name:'지속 가능성', icon:'🌍',
+    desc:'나와 사회, 지구의 미래를 함께 고려함',
+    back:'지속 가능성은 미래 세대를 위한 배려입니다. 오늘 내 선택이 내일의 세상을 만든다는 것을 기억할 때, 우리는 더 지혜롭게 행동합니다.',
+    pledge:'나는 오늘 내 선택이 미래에 미칠 영향을 생각하고 행동하겠습니다.' },
+];
+
+let selectedCard = null;
+let isFlipped    = false;
+let savedIds     = new Set();
+
+async function init() {
+  try {
+    const raw = localStorage.getItem('value_cards_saved');
+    if (raw) savedIds = new Set(JSON.parse(raw));
+  } catch(e) {}
+  renderGrid();
+  updateBadge();
+}
+
+async function persistSaved() {
+  try { localStorage.setItem('value_cards_saved', JSON.stringify([...savedIds])); } catch(e) {}
+  updateBadge();
+}
+
+function showGrid() {
+  document.body.classList.remove('detail-mode');
+  document.getElementById('grid-view').style.display = 'block';
+  document.getElementById('detail-view').classList.remove('active');
+  document.getElementById('saved-view').classList.remove('active');
+  document.getElementById('btn-all').classList.add('active');
+  document.getElementById('btn-saved').classList.remove('active');
+  isFlipped = false;
+  renderGrid();
+}
+
+function showSaved() {
+  document.body.classList.remove('detail-mode');
+  document.getElementById('grid-view').style.display = 'none';
+  document.getElementById('detail-view').classList.remove('active');
+  document.getElementById('saved-view').classList.add('active');
+  document.getElementById('btn-all').classList.remove('active');
+  document.getElementById('btn-saved').classList.add('active');
+  renderSaved();
+}
+
+function showDetail(id) {
+  selectedCard = virtues.find(v => v.id === id);
+  if (!selectedCard) return;
+  isFlipped = false;
+
+  document.getElementById('grid-view').style.display = 'none';
+  document.getElementById('saved-view').classList.remove('active');
+  document.getElementById('detail-view').classList.add('active');
+  document.body.classList.add('detail-mode');
+  window.scrollTo(0, 0);
+  document.getElementById('btn-all').classList.remove('active');
+  document.getElementById('btn-saved').classList.remove('active');
+
+  const suitColor = {'♠':'#2a4f94','♥':'#a52222','♦':'#94520a','♣':'#24653a'}[selectedCard.suit]||'#c9a84c';
+  document.getElementById('d-num').textContent        = `${selectedCard.suit} ${selectedCard.id}`;
+  document.getElementById('d-num').style.color        = suitColor;
+  document.getElementById('d-name').textContent       = selectedCard.name;
+  document.getElementById('d-icon').textContent       = selectedCard.icon;
+  document.getElementById('d-desc').textContent       = selectedCard.desc;
+  document.getElementById('d-back-icon').textContent  = selectedCard.icon;
+  document.getElementById('d-back-content').textContent = selectedCard.back;
+  document.getElementById('d-pledge').textContent     = selectedCard.pledge;
+  document.getElementById('flipper').classList.remove('flipped');
+  document.getElementById('flip-hint').textContent    = '✦ 카드를 눌러 뒷면 보기 ✦';
+  updateSaveBtn();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('cards-grid');
+  grid.innerHTML = '';
+  const suitBg = {'♠':'rgba(106,144,208,0.55)','♥':'rgba(192,64,64,0.55)','♦':'rgba(192,122,32,0.55)','♣':'rgba(74,144,96,0.55)'};
+  virtues.forEach((v,i) => {
+    const div = document.createElement('div');
+    div.className = 'mini-card' + (savedIds.has(v.id) ? ' saved-mark' : '');
+    div.style.animationDelay = (i*10)+'ms';
+    const bg = suitBg[v.suit]||'rgba(100,100,160,0.5)';
+    div.style.background = `linear-gradient(155deg,${bg} 0%,var(--card-bg) 55%,#0d1035 100%)`;
+    div.innerHTML = `<span class="mini-num">${v.suit}${v.id}</span><span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
+    div.onclick = () => showDetail(v.id);
+    grid.appendChild(div);
+  });
+}
+
+function renderSaved() {
+  const grid = document.getElementById('saved-grid');
+  if (savedIds.size === 0) {
+    grid.innerHTML = `<div class="empty-saved"><span class="empty-icon">🌙</span>아직 담아둔 카드가 없습니다.<br>마음에 드는 가치 카드를 담아두세요.</div>`;
+    return;
+  }
+  grid.innerHTML = '';
+  [...savedIds].sort((a,b)=>a-b).forEach(id => {
+    const v = virtues.find(x => x.id===id);
+    if (!v) return;
+    const div = document.createElement('div');
+    div.className = 'saved-mini';
+    div.innerHTML = `<span class="mini-num">${v.suit}${v.id}</span><span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
+    div.onclick = () => showDetail(v.id);
+    grid.appendChild(div);
+  });
+}
+
+function flipCard() {
+  isFlipped = !isFlipped;
+  document.getElementById('flipper').classList.toggle('flipped', isFlipped);
+  document.getElementById('flip-hint').textContent = isFlipped ? '✦ 다시 누르면 앞면으로 ✦' : '✦ 카드를 눌러 뒷면 보기 ✦';
+}
+
+function toggleSave() {
+  if (!selectedCard) return;
+  const id = selectedCard.id;
+  if (savedIds.has(id)) { savedIds.delete(id); showToast('카드를 담은 카드에서 제거했습니다'); }
+  else { savedIds.add(id); showToast('카드를 담아두었습니다 ♥'); }
+  updateSaveBtn();
+  persistSaved();
+}
+
+function updateSaveBtn() {
+  const btn = document.getElementById('save-btn');
+  if (!selectedCard) return;
+  if (savedIds.has(selectedCard.id)) { btn.textContent='♥ 담아둠'; btn.classList.add('saved-state'); }
+  else { btn.textContent='♥ 담아두기'; btn.classList.remove('saved-state'); }
+}
+
+function updateBadge() {
+  const b = document.getElementById('saved-badge');
+  if (savedIds.size > 0) { b.textContent=savedIds.size; b.style.display='flex'; } else b.style.display='none';
+  document.getElementById('detail-count').textContent = savedIds.size > 0 ? savedIds.size : '';
+}
+
+function clearSaved() {
+  if (!savedIds.size) return;
+  savedIds.clear(); persistSaved(); renderSaved(); showToast('담아둔 카드를 모두 비웠습니다');
+}
+
+function downloadSaved() {
+  if (savedIds.size === 0) { showToast('담아둔 카드가 없습니다'); return; }
+  const cards = [...savedIds].sort((a,b)=>a-b).map(id => virtues.find(v=>v.id===id)).filter(Boolean);
+  const today = new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'long',day:'numeric'});
+  let text = `가치 카드 — 나의 소중한 가치\n`;
+  text += `출처: 이토록 멋진 코칭 — 이한주 코치\n`;
+  text += `${today}\n`;
+  text += `${'─'.repeat(34)}\n\n`;
+  cards.forEach((v, i) => {
+    text += `${i+1}. ${v.name}  ${v.icon}\n`;
+    text += `   ${v.desc}\n\n`;
+  });
+  text += `${'─'.repeat(34)}\n`;
+  text += `총 ${cards.length}개의 가치`;
+  document.getElementById('modal-text').value = text;
+  document.getElementById('modal-overlay').classList.add('open');
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+function copyText() {
+  const ta = document.getElementById('modal-text');
+  ta.select();
+  try {
+    navigator.clipboard.writeText(ta.value).then(() => showToast('클립보드에 복사되었습니다 ✓')).catch(() => {
+      document.execCommand('copy');
+      showToast('클립보드에 복사되었습니다 ✓');
+    });
+  } catch(e) {
+    document.execCommand('copy');
+    showToast('클립보드에 복사되었습니다 ✓');
+  }
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+init();
+</script>
+</body>
+</html>
