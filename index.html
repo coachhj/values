@@ -4,298 +4,208 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>가치 카드 — 이토록 멋진 코칭</title>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+KR:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --navy:       #11132f;
-    --deep:       #0c0d24;
-    --card-bg:    #1a1d48;
-    --card-acc:   #1c2060;
-    --gold:       #c9a84c;
-    --gold-l:     #e8c97d;
-    --gold-p:     #f7edcc;
-    --cream:      #faf5e8;
-    --text-light: #fbf5e6;
-    --text-muted: #d4c6a6;
-    --glow:       rgba(201,168,76,0.25);
-    --r:          16px;
+    --bg:        #f8f5fc;
+    --bg2:       #fdf6f0;
+    --surface:   #ffffff;
+    --ink:       #2b2638;
+    --ink-2:     #4a4459;
+    --ink-3:     #6b6478;
+    --accent:    #6d5bd0;
+    --accent-d:  #5443b3;
+    --accent-l:  #ece8fb;
+    --line:      #e3dcef;
+    --heart:     #e0607e;
+    --r:         20px;
+    --font: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', 'Noto Sans KR', sans-serif;
   }
 
+  html { font-size: 17px; }
   body {
-    background: var(--deep);
-    color: var(--text-light);
-    font-family: 'Noto Serif KR', 'Crimson Pro', Georgia, serif;
+    background: linear-gradient(160deg, var(--bg) 0%, var(--bg2) 100%) fixed;
+    color: var(--ink);
+    font-family: var(--font);
     min-height: 100vh;
     overflow-x: hidden;
     word-break: keep-all;
     overflow-wrap: break-word;
+    -webkit-font-smoothing: antialiased;
   }
+  button { font-family: var(--font); }
 
-  body::before {
-    content: '';
-    position: fixed; inset: 0; z-index: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(30,20,80,0.7) 0%, transparent 70%),
-      radial-gradient(ellipse 60% 50% at 80% 90%, rgba(20,15,60,0.6) 0%, transparent 70%),
-      radial-gradient(1px 1px at 15% 25%, rgba(255,255,255,0.6) 0%, transparent 100%),
-      radial-gradient(1px 1px at 35% 60%, rgba(255,255,255,0.4) 0%, transparent 100%),
-      radial-gradient(1px 1px at 55% 15%, rgba(255,255,255,0.5) 0%, transparent 100%),
-      radial-gradient(1px 1px at 72% 45%, rgba(255,255,255,0.3) 0%, transparent 100%),
-      radial-gradient(1px 1px at 88% 20%, rgba(255,255,255,0.6) 0%, transparent 100%),
-      radial-gradient(2px 2px at 10% 80%, rgba(201,168,76,0.4) 0%, transparent 100%),
-      radial-gradient(2px 2px at 90% 70%, rgba(201,168,76,0.3) 0%, transparent 100%),
-      var(--navy);
-    pointer-events: none;
-  }
-
-  #app { position: relative; z-index: 1; }
+  #app { position: relative; }
 
   header {
     text-align: center;
-    padding: 28px 20px 14px;
-    border-bottom: 1px solid rgba(201,168,76,0.35);
-    background: #0f1129;
+    padding: 22px 20px 16px;
+    background: #ffffff;
+    border-bottom: 1px solid var(--line);
     position: sticky; top: 0; z-index: 100;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    box-shadow: 0 4px 16px rgba(80,60,140,0.06);
   }
   header h1 {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(1.4rem, 4vw, 2.2rem);
-    color: var(--gold);
-    letter-spacing: 0.15em;
-    text-shadow: 0 0 30px var(--glow);
+    font-size: clamp(1.7rem, 5vw, 2.3rem);
+    font-weight: 800;
+    color: var(--accent-d);
+    letter-spacing: 0.02em;
   }
-  .subtitle {
-    font-size: 1rem;
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    margin-top: 5px;
-    font-family: 'Noto Serif KR', serif;
-  }
-  .header-actions {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 12px;
-  }
+  .subtitle { font-size: 1.1rem; color: var(--ink-2); margin-top: 4px; }
+  .header-actions { display: flex; justify-content: center; gap: 10px; margin-top: 14px; }
   .nav-btn {
-    font-family: 'Noto Serif KR', serif;
-    font-size: 0.95rem;
-    padding: 8px 20px;
-    border: 1px solid rgba(201,168,76,0.4);
-    background: rgba(201,168,76,0.08);
-    color: var(--gold-l);
-    border-radius: 20px;
+    font-size: 1.05rem; font-weight: 600;
+    padding: 9px 22px;
+    border: 1.5px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    border-radius: 999px;
     cursor: pointer;
-    letter-spacing: 0.08em;
-    transition: all 0.25s;
+    transition: all 0.2s;
     position: relative;
   }
-  .nav-btn:hover { background: rgba(201,168,76,0.18); border-color: var(--gold); }
-  .nav-btn.active { background: rgba(201,168,76,0.22); border-color: var(--gold); color: var(--gold); }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent-d); }
+  .nav-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
   .saved-badge {
-    position: absolute; top: -6px; right: -6px;
-    background: var(--gold); color: var(--deep);
-    border-radius: 50%; width: 22px; height: 22px;
-    font-size: 0.72rem; font-weight: 700;
+    position: absolute; top: -8px; right: -8px;
+    background: var(--heart); color: #fff;
+    border-radius: 50%; width: 24px; height: 24px;
+    font-size: 0.8rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Cinzel', serif;
+    border: 2px solid #fff;
   }
-  .header-source {
-    font-size: 0.82rem;
-    color: #bfb194;
-    letter-spacing: 0.08em;
-    margin-top: 10px;
-    font-family: 'Noto Serif KR', serif;
-  }
+  .header-source { font-size: 0.92rem; color: var(--ink-3); margin-top: 10px; }
 
   /* GRID */
-  #grid-view { padding: 28px 16px 60px; max-width: 1200px; margin: 0 auto; }
-  .grid-title {
-    text-align: center;
-    font-size: 0.98rem;
-    letter-spacing: 0.06em;
-    color: var(--text-muted);
-    margin-bottom: 24px;
-    font-family: 'Noto Serif KR', serif;
-  }
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 12px;
-  }
+  #grid-view { padding: 26px 16px 60px; max-width: 1200px; margin: 0 auto; }
+  .grid-title { text-align: center; font-size: 1.15rem; color: var(--ink-2); margin-bottom: 22px; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; }
 
   .mini-card {
-    aspect-ratio: 2/3;
-    border-radius: 10px;
-    border: 1px solid rgba(201,168,76,0.45);
+    aspect-ratio: 3/4;
+    border-radius: 16px;
+    border: 1.5px solid rgba(0,0,0,0.05);
     cursor: pointer;
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
-    gap: 6px;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    gap: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
     position: relative; overflow: hidden;
+    box-shadow: 0 3px 10px rgba(80,60,140,0.08);
     animation: fadeUp 0.4s ease both;
   }
-  .mini-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 60%);
-  }
-  .mini-card:hover {
-    transform: translateY(-4px) scale(1.04);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 16px var(--glow);
-    border-color: var(--gold);
-  }
-  .mini-card:hover .mini-icon { transform: scale(1.2); }
-  .mini-num { font-family: 'Cinzel', serif; font-size: 0.9rem; color: var(--gold-l); font-weight: 600; letter-spacing: 0.1em; }
-  .mini-icon { font-size: 2.56rem; transition: transform 0.2s; }
-  .mini-name { font-family: 'Noto Serif KR', serif; font-size: 1.1rem; font-weight: 600; color: #fff8e6; text-shadow: 0 1px 3px rgba(0,0,0,0.6); text-align: center; padding: 0 4px; }
-  .mini-card.saved-mark::after { content: '♥'; position: absolute; top: 4px; right: 6px; font-size: 0.85rem; color: var(--gold-l); }
+  .mini-card:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(80,60,140,0.16); }
+  .mini-card:hover .mini-icon { transform: scale(1.12); }
+  .mini-icon { font-size: 2.8rem; transition: transform 0.2s; }
+  .mini-name { font-size: 1.3rem; font-weight: 700; color: var(--ink); text-align: center; padding: 0 6px; }
+  .mini-card.saved-mark::after { content: '♥'; position: absolute; top: 8px; right: 10px; font-size: 1.05rem; color: var(--heart); }
 
   /* DETAIL */
-  #detail-view { display: none; flex-direction: column; align-items: center; padding: 32px 20px 80px; min-height: calc(100vh - 130px); }
+  #detail-view { display: none; flex-direction: column; align-items: center; padding: 32px 16px 60px; }
   #detail-view.active { display: flex; }
   body.detail-mode header { display: none; }
-  body.detail-mode #detail-view { min-height: 100vh; padding-top: 28px; }
+  body.detail-mode #detail-view { min-height: 100vh; padding-top: 24px; }
 
   .card-scene {
     perspective: 1200px;
-    width: min(320px, 88vw);
-    height: min(560px, 155vw);
+    width: min(370px, 92vw);
+    height: min(600px, 158vw);
     cursor: pointer;
-    margin-bottom: 32px;
+    margin-bottom: 22px;
   }
-  .card-flipper {
-    width: 100%; height: 100%;
-    position: relative;
-    transform-style: preserve-3d;
-    transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
-  }
+  .card-flipper { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4,0,0.2,1); }
   .card-flipper.flipped { transform: rotateY(180deg); }
   .card-face {
     position: absolute; inset: 0;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    border-radius: var(--r);
-    overflow: hidden;
-  }
-
-  .card-front {
-    background: linear-gradient(165deg, #fdf6e8 0%, #f5e8c5 40%, #ede0b2 100%);
-    border: 2px solid var(--gold);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 40px var(--glow);
+    backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    border-radius: var(--r); overflow: hidden;
     display: flex; flex-direction: column; align-items: center;
-    padding: 24px 20px 20px;
+    padding: 30px 24px 22px;
+    box-shadow: 0 16px 40px rgba(80,60,140,0.16);
   }
-  .card-front::before {
-    content: ''; position: absolute; inset: 8px;
-    border: 1px solid rgba(201,168,76,0.4);
-    border-radius: calc(var(--r) - 4px);
-    pointer-events: none;
-  }
-  .card-front-num {
-    font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 700;
-    color: var(--gold); letter-spacing: 0.15em;
-    align-self: flex-start; margin-left: 6px;
-  }
-  .card-front-name {
-    font-family: 'Cinzel', serif;
-    font-size: clamp(3rem, 12vw, 4rem);
-    letter-spacing: 0.08em; text-align: center;
-    margin-top: 12px; line-height: 1.2; font-weight: 700;
-    color: #3d2504;
-  }
-  .card-front-icon { font-size: clamp(3rem,12vw,4rem); margin: 18px 0; filter: drop-shadow(0 4px 12px rgba(201,168,76,0.4)); }
-  .card-front-divider { width: 60%; height: 1px; background: linear-gradient(90deg,transparent,var(--gold),transparent); margin: 4px 0 16px; }
-  .card-front-desc { font-family:'Noto Serif KR',serif; font-size:1.08rem; font-weight:600; color:#24180a; line-height:1.8; text-align:center; padding:0 8px; flex:1; }
-  .card-front-hint { font-family:'Crimson Pro',serif; font-size:0.82rem; color:#7a5a12; margin-top:14px; letter-spacing:0.04em; font-family:'Noto Serif KR',serif; }
+  .card-front { background: linear-gradient(180deg, #ffffff 0%, #ffffff 55%, var(--suit-bg, #f3effd) 100%); border: 1.5px solid var(--line); justify-content: center; }
+  .card-front-name { font-size: clamp(3rem, 13vw, 3.8rem); font-weight: 800; text-align: center; margin-top: 0; line-height: 1.2; color: var(--ink); }
+  .card-front-icon { font-size: clamp(3.4rem,14vw,4.4rem); margin: 22px 0 18px; }
+  .card-front-divider { width: 50%; height: 3px; border-radius: 3px; background: var(--suit-c, var(--accent-l)); margin: 4px 0 22px; }
+  .card-front-desc { font-size: 1.45rem; font-weight: 600; color: var(--ink); line-height: 1.6; text-align: center; padding: 0 4px; }
+  .card-front-hint { font-size: 0.95rem; color: var(--ink-3); position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; }
 
-  .card-back {
-    background: linear-gradient(160deg, #2a1b5c 0%, #1d1448 45%, #140e36 100%);
-    border: 2px solid var(--gold);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7), 0 0 50px rgba(100,60,200,0.15);
-    transform: rotateY(180deg);
-    display: flex; flex-direction: column; align-items: center;
-    padding: 24px 20px 20px;
-  }
-  .card-back::before {
-    content: ''; position: absolute; inset: 8px;
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: calc(var(--r) - 4px);
-    pointer-events: none;
-  }
-  .card-back-label { font-family:'Cinzel',serif; font-size:0.85rem; font-weight:600; color:var(--gold-l); letter-spacing:0.12em; margin-bottom:14px; }
-  .card-back-icon { font-size:2rem; margin-bottom:10px; }
-  .card-back-content { font-family:'Noto Serif KR',serif; font-size:1rem; color:#ffffff; line-height:1.8; text-align:center; padding:0 4px; flex:1; }
-  .card-back-divider { width:50%; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); margin:14px 0; }
-  .card-back-pledge-label { font-family:'Cinzel',serif; font-size:0.9rem; font-weight:700; color:var(--gold-l); letter-spacing:0.12em; margin-bottom:8px; font-family:'Noto Serif KR',serif; }
-  .card-back-pledge { font-family:'Noto Serif KR',serif; font-size:1rem; font-weight:600; color:#ffefc2; line-height:1.75; text-align:center; padding:0 6px; }
-  .card-back-stars { font-size:0.7rem; color:var(--gold); opacity:0.7; letter-spacing:6px; margin-top:10px; }
+  .card-back { background: var(--suit-bg, #f3effd); border: 1.5px solid var(--line); transform: rotateY(180deg); padding-top: 26px; }
+  .card-back-label { font-size: 1rem; font-weight: 700; color: var(--accent-d); letter-spacing: 0.04em; margin-bottom: 10px; }
+  .card-back-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .card-back-content { font-size: 1.12rem; color: var(--ink); line-height: 1.75; text-align: center; padding: 0 2px; flex: 1; }
+  .card-back-divider { width: 40%; height: 2px; border-radius: 2px; background: rgba(109,91,208,0.3); margin: 14px 0; }
+  .card-back-pledge-label { font-size: 1.05rem; font-weight: 800; color: var(--accent-d); margin-bottom: 8px; }
+  .card-back-pledge { font-size: 1.12rem; font-weight: 600; color: var(--ink); line-height: 1.65; text-align: center; background: rgba(255,255,255,0.7); border-radius: 12px; padding: 12px 14px; width: 100%; }
+  .card-back-stars { display: none; }
 
-  .flip-hint { font-family:'Noto Serif KR',serif; font-size:0.92rem; color:var(--text-muted); margin-bottom:16px; animation:pulse 2s ease-in-out infinite; }
-  @keyframes pulse { 0%,100%{opacity:0.75} 50%{opacity:1} }
+  .flip-hint { font-size: 1rem; color: var(--ink-2); margin-bottom: 16px; }
 
-  .card-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
-  .action-btn { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 26px; border-radius:30px; cursor:pointer; letter-spacing:0.05em; transition:all 0.25s; border:none; }
-  .btn-back { background:rgba(255,255,255,0.1); border:1px solid rgba(201,168,76,0.55); color:var(--text-light); }
-  .btn-back:hover { background:rgba(255,255,255,0.12); border-color:var(--gold); }
-  .btn-save { background:linear-gradient(135deg,#b58a24 0%,var(--gold-l) 100%); color:#1a1000; font-weight:700; box-shadow:0 4px 16px rgba(201,168,76,0.3); }
-  .count-chip { display:inline-block; min-width:22px; margin-left:6px; padding:0 6px; border-radius:11px; background:var(--gold); color:#1a1000; font-size:0.78rem; font-weight:700; line-height:22px; text-align:center; }
+  .card-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .action-btn { font-size: 1.08rem; font-weight: 600; padding: 13px 24px; border-radius: 999px; cursor: pointer; transition: all 0.2s; border: none; }
+  .btn-back { background: var(--surface); border: 1.5px solid var(--line); color: var(--ink); }
+  .btn-back:hover { border-color: var(--accent); color: var(--accent-d); }
+  .btn-save { background: var(--accent); color: #fff; box-shadow: 0 4px 14px rgba(109,91,208,0.3); }
+  .btn-save:hover { background: var(--accent-d); }
+  .btn-save.saved-state { background: #fde7ec; color: #c23b5c; border: 1.5px solid #f4b6c4; box-shadow: none; }
+  .count-chip { display:inline-block; min-width:24px; margin-left:6px; padding:0 7px; border-radius:12px; background:var(--heart); color:#fff; font-size:0.85rem; font-weight:700; line-height:24px; text-align:center; }
   .count-chip:empty { display:none; }
-  .btn-save:hover { box-shadow:0 6px 24px rgba(201,168,76,0.5); transform:translateY(-1px); }
-  .btn-save.saved-state { background:rgba(201,168,76,0.18); border:1px solid var(--gold-l); color:var(--gold-l); box-shadow:none; }
 
   /* SAVED */
-  #saved-view { display:none; padding:32px 16px 80px; max-width:900px; margin:0 auto; }
-  #saved-view.active { display:block; }
-  .saved-header { text-align:center; margin-bottom:28px; }
-  .saved-header h2 { font-family:'Cinzel',serif; color:var(--gold); font-size:1.5rem; letter-spacing:0.12em; }
-  .saved-header p { font-size:1rem; color:var(--text-muted); margin-top:8px; }
-  .saved-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:14px; margin-bottom:32px; }
-  .saved-mini { aspect-ratio:2/3; border-radius:10px; background:linear-gradient(155deg,#2c2070 0%,#1a1448 100%); border:1px solid rgba(201,168,76,0.55); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; cursor:pointer; transition:all 0.2s; }
-  .saved-mini:hover { transform:translateY(-4px); box-shadow:0 10px 24px rgba(0,0,0,0.5),0 0 14px var(--glow); border-color:var(--gold); }
-  .saved-mini .mini-icon { font-size:2.2rem; }
-  .saved-mini .mini-name { font-size:1.05rem; color:#fff8e6; font-family:'Noto Serif KR',serif; }
-  .empty-saved { text-align:center; padding:60px 20px; color:var(--text-muted); font-size:1.05rem; line-height:2; grid-column:1/-1; }
-  .empty-saved .empty-icon { font-size:3rem; display:block; margin-bottom:16px; opacity:0.4; }
-  .saved-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  .btn-clear { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; border:1px solid rgba(230,110,110,0.6); background:rgba(180,60,60,0.14); color:#ffaaaa; cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
-  .btn-clear:hover { background:rgba(180,60,60,0.18); border-color:#e08080; }
-  .btn-download { font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; border:1px solid rgba(201,168,76,0.6); background:rgba(201,168,76,0.14); color:var(--gold-l); cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
-  .btn-download:hover { background:rgba(201,168,76,0.18); border-color:var(--gold); color:var(--gold); }
+  #saved-view { display: none; padding: 30px 16px 70px; max-width: 900px; margin: 0 auto; }
+  #saved-view.active { display: block; }
+  .saved-header { text-align: center; margin-bottom: 24px; }
+  .saved-header h2 { font-size: 1.7rem; font-weight: 800; color: var(--accent-d); }
+  .saved-header p { font-size: 1.1rem; color: var(--ink-2); margin-top: 6px; }
+  .saved-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; margin-bottom: 30px; }
+  .saved-mini { aspect-ratio: 3/4; border-radius: 16px; border: 1.5px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; cursor: pointer; transition: all 0.2s; box-shadow: 0 3px 10px rgba(80,60,140,0.08); }
+  .saved-mini:hover { transform: translateY(-4px); box-shadow: 0 10px 24px rgba(80,60,140,0.16); }
+  .empty-saved { text-align: center; padding: 50px 20px; color: var(--ink-2); font-size: 1.15rem; line-height: 1.9; grid-column: 1/-1; }
+  .empty-saved .empty-icon { font-size: 3rem; display: block; margin-bottom: 14px; }
+  .saved-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .btn-clear { font-size: 1.08rem; font-weight: 600; padding: 13px 24px; border-radius: 999px; border: 1.5px solid #f4b6c4; background: #fff; color: #c23b5c; cursor: pointer; transition: all 0.2s; }
+  .btn-clear:hover { background: #fde7ec; }
+  .btn-download { font-size: 1.08rem; font-weight: 600; padding: 13px 24px; border-radius: 999px; border: none; background: var(--accent); color: #fff; cursor: pointer; transition: all 0.2s; }
+  .btn-download:hover { background: var(--accent-d); }
 
-  /* ── copy modal ── */
-  .modal-overlay { position:fixed; inset:0; background:rgba(4,4,20,0.88); z-index:500; display:none; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(6px); }
-  .modal-overlay.open { display:flex; }
-  .modal-box { background:linear-gradient(160deg,#12153a 0%,#0a0d28 100%); border:1px solid rgba(201,168,76,0.4); border-radius:16px; width:min(520px,96vw); max-height:82vh; display:flex; flex-direction:column; box-shadow:0 24px 60px rgba(0,0,0,0.7),0 0 40px rgba(201,168,76,0.1); }
-  .modal-header { display:flex; align-items:center; justify-content:space-between; padding:18px 22px 14px; border-bottom:1px solid rgba(201,168,76,0.15); }
-  .modal-title { font-family:'Noto Serif KR',serif; font-weight:700; font-size:1.05rem; color:var(--gold); letter-spacing:0.15em; }
-  .modal-close { background:none; border:none; color:var(--text-muted); font-size:1.4rem; cursor:pointer; line-height:1; padding:2px 6px; transition:color 0.2s; }
-  .modal-close:hover { color:var(--gold); }
-  .modal-body { padding:16px 22px; overflow-y:auto; flex:1; }
-  .modal-hint { font-size:0.92rem; color:var(--text-muted); margin-bottom:10px; letter-spacing:0.05em; }
-  .modal-textarea { width:100%; min-height:240px; background:rgba(0,0,0,0.35); border:1px solid rgba(201,168,76,0.35); border-radius:8px; color:#ffffff; font-family:'Noto Serif KR',monospace; font-size:0.98rem; line-height:1.9; padding:14px; resize:vertical; outline:none; letter-spacing:0.02em; }
-  .modal-textarea:focus { border-color:rgba(201,168,76,0.5); }
-  .modal-footer { padding:14px 22px 18px; display:flex; gap:10px; justify-content:flex-end; border-top:1px solid rgba(201,168,76,0.1); }
-  .btn-copy { font-family:'Noto Serif KR',serif; font-size:1rem; padding:10px 22px; border-radius:22px; border:none; background:linear-gradient(135deg,#b58a24,var(--gold-l)); color:#1a1000; font-weight:700; cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
-  .btn-copy:hover { box-shadow:0 4px 16px rgba(201,168,76,0.4); transform:translateY(-1px); }
-  .btn-modal-cancel { font-family:'Noto Serif KR',serif; font-size:1rem; padding:10px 20px; border-radius:22px; border:1px solid rgba(201,168,76,0.5); background:transparent; color:var(--text-light); cursor:pointer; transition:all 0.2s; letter-spacing:0.05em; }
-  .btn-modal-cancel:hover { border-color:var(--gold); color:var(--text-light); }
+  /* modal */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(43,38,56,0.45); z-index: 500; display: none; align-items: center; justify-content: center; padding: 16px; }
+  .modal-overlay.open { display: flex; }
+  .modal-box { background: var(--surface); border-radius: 18px; width: min(540px,96vw); max-height: 86vh; display: flex; flex-direction: column; box-shadow: 0 24px 60px rgba(43,38,56,0.25); }
+  .modal-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px 14px; border-bottom: 1px solid var(--line); }
+  .modal-title { font-size: 1.2rem; font-weight: 800; color: var(--accent-d); }
+  .modal-close { background: none; border: none; color: var(--ink-3); font-size: 1.8rem; cursor: pointer; line-height: 1; padding: 2px 6px; }
+  .modal-close:hover { color: var(--ink); }
+  .modal-body { padding: 16px 22px; overflow-y: auto; flex: 1; }
+  .modal-hint { font-size: 1rem; color: var(--ink-2); margin-bottom: 10px; }
+  .modal-textarea { width: 100%; min-height: 260px; background: #faf8fe; border: 1.5px solid var(--line); border-radius: 10px; color: var(--ink); font-family: var(--font); font-size: 1.05rem; line-height: 1.8; padding: 14px; resize: vertical; outline: none; }
+  .modal-textarea:focus { border-color: var(--accent); }
+  .modal-footer { padding: 14px 22px 18px; display: flex; gap: 10px; justify-content: flex-end; border-top: 1px solid var(--line); }
+  .btn-copy { font-size: 1.05rem; font-weight: 700; padding: 11px 22px; border-radius: 999px; border: none; background: var(--accent); color: #fff; cursor: pointer; }
+  .btn-copy:hover { background: var(--accent-d); }
+  .btn-modal-cancel { font-size: 1.05rem; font-weight: 600; padding: 11px 20px; border-radius: 999px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; }
 
-  .toast { position:fixed; bottom:28px; left:50%; transform:translateX(-50%) translateY(80px); background:rgba(30,20,70,0.95); border:1px solid var(--gold); color:#fff8e6; font-family:'Noto Serif KR',serif; font-size:1rem; padding:12px 24px; border-radius:24px; letter-spacing:0.06em; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index:999; backdrop-filter:blur(10px); box-shadow:0 8px 24px rgba(0,0,0,0.5); white-space:nowrap; }
-  .toast.show { transform:translateX(-50%) translateY(0); }
+  .toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--ink); color: #fff; font-size: 1.05rem; font-weight: 600; padding: 12px 24px; border-radius: 999px; transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 999; box-shadow: 0 8px 24px rgba(43,38,56,0.25); white-space: nowrap; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
 
-  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-  @media (max-width:480px) { .cards-grid{grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px} .mini-icon{font-size:2rem} .mini-name{font-size:0.98rem} .mini-num{font-size:0.8rem} .action-btn{padding:11px 16px;font-size:0.95rem} .card-actions{gap:6px;flex-wrap:nowrap} .card-actions .action-btn{padding:10px 12px;font-size:0.9rem;white-space:nowrap;letter-spacing:0} .count-chip{min-width:20px;line-height:20px;margin-left:4px;font-size:0.72rem} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  @media (max-width:480px) {
+    html { font-size: 16px; }
+    .cards-grid, .saved-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .mini-icon { font-size: 2.3rem; }
+    .mini-name { font-size: 1.15rem; }
+    .card-actions { gap: 6px; flex-wrap: nowrap; }
+    .card-actions .action-btn { padding: 11px 13px; font-size: 1rem; white-space: nowrap; }
+    .count-chip { min-width: 20px; line-height: 20px; margin-left: 4px; font-size: 0.75rem; padding: 0 5px; }
+  }
 </style>
 </head>
 <body>
 <div id="app">
   <header>
-    <h1>✦ 가치 카드 ✦</h1>
+    <h1>가치 카드</h1>
     <p class="subtitle">가치란 소중한 것, 판단의 기준</p>
     <div class="header-actions">
       <button class="nav-btn active" id="btn-all" onclick="showGrid()">전체 카드</button>
@@ -316,25 +226,23 @@
     <div class="card-scene" onclick="flipCard()">
       <div class="card-flipper" id="flipper">
         <div class="card-face card-front">
-          <div class="card-front-num" id="d-num"></div>
           <div class="card-front-name" id="d-name"></div>
           <div class="card-front-icon" id="d-icon"></div>
           <div class="card-front-divider"></div>
           <div class="card-front-desc" id="d-desc"></div>
-          <div class="card-front-hint">카드를 누르면 뒷면을 볼 수 있습니다</div>
+          <div class="card-front-hint">👆 눌러서 뒤집기</div>
         </div>
         <div class="card-face card-back">
-          <div class="card-back-label">✦ 마음의 울림 ✦</div>
+          <div class="card-back-label">마음의 울림</div>
           <div class="card-back-icon" id="d-back-icon"></div>
           <div class="card-back-content" id="d-back-content"></div>
           <div class="card-back-divider"></div>
           <div class="card-back-pledge-label">오늘의 다짐</div>
           <div class="card-back-pledge" id="d-pledge"></div>
-          <div class="card-back-stars">✦ ✦ ✦</div>
         </div>
       </div>
     </div>
-    <p class="flip-hint" id="flip-hint">✦ 카드를 눌러 뒷면 보기 ✦</p>
+    <p class="flip-hint" id="flip-hint">카드를 누르면 뒷면을 볼 수 있어요</p>
     <div class="card-actions">
       <button class="action-btn btn-back" onclick="showGrid()">전체 카드</button>
       <button class="action-btn btn-back" onclick="showSaved()">담아둔 카드<span class="count-chip" id="detail-count"></span></button>
@@ -344,7 +252,7 @@
 
   <div id="saved-view">
     <div class="saved-header">
-      <h2>✦ 담은 카드 ✦</h2>
+      <h2>담은 카드</h2>
       <p>내가 소중히 여기는 가치들</p>
     </div>
     <div class="saved-grid" id="saved-grid"></div>
@@ -359,7 +267,7 @@
 <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
   <div class="modal-box">
     <div class="modal-header">
-      <span class="modal-title">✦ 담은 카드 내용 ✦</span>
+      <span class="modal-title">담은 카드 내용</span>
       <button class="modal-close" onclick="closeModalDirect()">×</button>
     </div>
     <div class="modal-body">
@@ -514,7 +422,7 @@ const virtues = [
 
   { id:28, suit:'♦', name:'감사',      icon:'🙏',
     desc:'받은 것에 고마움을 표현함',
-    back:'감사는 관점의 혁명입니다. 어려운 시간에도 감사할 것을 찾는 연습이 우리의 마음을 변화시킵니다. 감사하는 삶이 가장 풍요로운 삶입니다.',
+    back:'감사는 관점의 전환입니다. 어려운 시간에도 감사할 것을 찾는 연습이 우리의 마음을 변화시킵니다. 감사하는 삶이 가장 풍요로운 삶입니다.',
     pledge:'나는 오늘 내 삶의 선물들을 의식하며 감사를 표현하겠습니다.' },
 
   { id:29, suit:'♦', name:'인정',      icon:'🎖️',
@@ -613,6 +521,13 @@ const virtues = [
     pledge:'나는 오늘 내 선택이 미래에 미칠 영향을 생각하고 행동하겠습니다.' },
 ];
 
+const PASTEL = {
+  '♠': { bg:'#ece7fb', line:'#b9acef' },
+  '♥': { bg:'#fde4e8', line:'#f2a9b8' },
+  '♦': { bg:'#fdeedb', line:'#f3c58f' },
+  '♣': { bg:'#e0f3e8', line:'#9fd4b4' },
+};
+
 let selectedCard = null;
 let isFlipped    = false;
 let savedIds     = new Set();
@@ -665,9 +580,10 @@ function showDetail(id) {
   document.getElementById('btn-all').classList.remove('active');
   document.getElementById('btn-saved').classList.remove('active');
 
-  const suitColor = {'♠':'#2a4f94','♥':'#a52222','♦':'#94520a','♣':'#24653a'}[selectedCard.suit]||'#c9a84c';
-  document.getElementById('d-num').textContent        = `${selectedCard.suit} ${selectedCard.id}`;
-  document.getElementById('d-num').style.color        = suitColor;
+  const p = PASTEL[selectedCard.suit] || PASTEL['♠'];
+  const scene = document.querySelector('.card-scene');
+  scene.style.setProperty('--suit-c', p.line);
+  scene.style.setProperty('--suit-bg', p.bg);
   document.getElementById('d-name').textContent       = selectedCard.name;
   document.getElementById('d-icon').textContent       = selectedCard.icon;
   document.getElementById('d-desc').textContent       = selectedCard.desc;
@@ -675,21 +591,19 @@ function showDetail(id) {
   document.getElementById('d-back-content').textContent = selectedCard.back;
   document.getElementById('d-pledge').textContent     = selectedCard.pledge;
   document.getElementById('flipper').classList.remove('flipped');
-  document.getElementById('flip-hint').textContent    = '✦ 카드를 눌러 뒷면 보기 ✦';
+  document.getElementById('flip-hint').textContent    = '카드를 누르면 뒷면을 볼 수 있어요';
   updateSaveBtn();
 }
 
 function renderGrid() {
   const grid = document.getElementById('cards-grid');
   grid.innerHTML = '';
-  const suitBg = {'♠':'rgba(106,144,208,0.55)','♥':'rgba(192,64,64,0.55)','♦':'rgba(192,122,32,0.55)','♣':'rgba(74,144,96,0.55)'};
   virtues.forEach((v,i) => {
     const div = document.createElement('div');
     div.className = 'mini-card' + (savedIds.has(v.id) ? ' saved-mark' : '');
     div.style.animationDelay = (i*10)+'ms';
-    const bg = suitBg[v.suit]||'rgba(100,100,160,0.5)';
-    div.style.background = `linear-gradient(155deg,${bg} 0%,var(--card-bg) 55%,#0d1035 100%)`;
-    div.innerHTML = `<span class="mini-num">${v.suit}${v.id}</span><span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
+    div.style.background = (PASTEL[v.suit]||PASTEL['♠']).bg;
+    div.innerHTML = `<span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
     div.onclick = () => showDetail(v.id);
     grid.appendChild(div);
   });
@@ -707,7 +621,8 @@ function renderSaved() {
     if (!v) return;
     const div = document.createElement('div');
     div.className = 'saved-mini';
-    div.innerHTML = `<span class="mini-num">${v.suit}${v.id}</span><span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
+    div.style.background = (PASTEL[v.suit]||PASTEL['♠']).bg;
+    div.innerHTML = `<span class="mini-icon">${v.icon}</span><span class="mini-name">${v.name}</span>`;
     div.onclick = () => showDetail(v.id);
     grid.appendChild(div);
   });
@@ -716,7 +631,7 @@ function renderSaved() {
 function flipCard() {
   isFlipped = !isFlipped;
   document.getElementById('flipper').classList.toggle('flipped', isFlipped);
-  document.getElementById('flip-hint').textContent = isFlipped ? '✦ 다시 누르면 앞면으로 ✦' : '✦ 카드를 눌러 뒷면 보기 ✦';
+  document.getElementById('flip-hint').textContent = isFlipped ? '다시 누르면 앞면으로 돌아가요' : '카드를 누르면 뒷면을 볼 수 있어요';
 }
 
 function toggleSave() {
